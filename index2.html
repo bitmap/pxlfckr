@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<style>
+  button {
+    background: black;
+    color: white;
+    border: 0;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  img,
+  canvas {
+    background: black;
+    max-width: 100%;
+  }
+
+  canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+</style>
+
+
+<canvas id="scene"></canvas>
+
+<!-- <button>CONVERT</button> -->
+
+<script>
+    var png = new Image();
+    png.onload = drawScene;
+    png.src = "asap-ferg-mini.png";
+
+    var _SIZE_ = 6;
+
+function drawScene() {
+
+  console.log(png)
+
+
+    var canvas    = document.getElementById("scene");
+    var ctx       = canvas.getContext("2d");
+
+    canvas.width = png.width * _SIZE_;
+    canvas.height = png.height * _SIZE_;
+
+    ctx.drawImage(png, 0, 0);
+    var data = ctx.getImageData(0, 0, png.width, png.height);
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
+    var particles = [];
+    var particles2 = [];
+    var particles3 = [];
+    var particles4 = [];
+    for (var y = 0, y2 = data.height; y < y2; y++) {
+        for (var x = 0, x2 = data.width; x < x2; x++) {
+            if (data.data[(x * 4 + y * 4 * data.width)] > 50) {
+                var particle = {
+                    x : x,
+                    y : y
+                };
+                particles.push(particle);
+            }
+
+            if (data.data[(x * 4 + y * 4 * data.width)] > 125) {
+                var particle2 = {
+                    x : x,
+                    y : y
+                };
+                particles2.push(particle2);
+            }
+
+            if (data.data[(x * 4 + y * 4 * data.width)] > 175) {
+                var particle3 = {
+                    x : x,
+                    y : y
+                };
+                particles3.push(particle3);
+            }
+
+            if (data.data[(x * 4 + y * 4 * data.width)] > 225) {
+                var particle4 = {
+                    x : x,
+                    y : y
+                };
+                particles4.push(particle4);
+            }
+        }
+    }
+
+    // var pixels = ctx.getImageData(
+    //   0, 0, canvas.width, canvas.height
+    // );
+    //
+    // function setPixel(imageData, x, y, r, g, b, a) {
+    //   index = (x + y * imageData.width) * 4;
+    //   data[index + 0] = r;
+    //   data[index + 1] = g;
+    //   data[index + 2] = b;
+    //   data[index + 3] = a;
+    // }
+    //
+    // for (i = 0; i < 10000; i++) {
+    //   x = Math.random() * canvas.width | 0; // |0 to truncate to Int32
+    //   y = Math.random() * canvas.height | 0;
+    //   r = Math.random() * 256 | 0;
+    //   g = Math.random() * 256 | 0;
+    //   b = Math.random() * 256 | 0;
+    //   setPixel(pixels, x, y, r, g, b, 255); // 255 opaque
+    // }
+
+    ctx.beginPath();
+    ctx.lineWidth = "100";
+    ctx.fillStyle = "lime";
+    ctx.rect(
+      Math.random() * canvas.width | 0,
+      Math.random() * canvas.height | 0,
+      Math.floor((Math.random()*150)+150),
+      Math.floor((Math.random()*150)+150)
+    );
+    ctx.fill();
+
+    for(var i=0, j=particles.length;i<j;i++){
+        var particle = particles[i];
+        ctx.fillStyle = "#00a";
+        ctx.fillRect(particle.x * _SIZE_, particle.y * _SIZE_, 2, 2);
+    }
+    for(var i=0, j=particles2.length;i<j;i++){
+        var particle = particles2[i];
+        ctx.fillStyle = "#008";
+        ctx.fillRect(particle.x * _SIZE_, particle.y * _SIZE_, 3, 3);
+    }
+    for(var i=0, j=particles3.length;i<j;i++){
+        var particle = particles3[i];
+        ctx.fillStyle = "blue";
+
+        ctx.fillRect(particle.x * _SIZE_, particle.y * _SIZE_, 1, 8);
+    }
+    for(var i=0, j=particles4.length;i<j;i++){
+        var particle = particles4[i];
+        ctx.fillStyle = "cyan";
+
+        ctx.fillRect(particle.x * _SIZE_, particle.y * _SIZE_, 3, 1);
+    }
+}
+
+
+    // var button = document.querySelector('button');
+    // button.addEventListener('click', shiftcolour, false);
+
+    function rgb2hsv(r, g, b) {
+      var computedH = 0;
+      var computedS = 0;
+      var computedV = 0;
+
+      //remove spaces from input RGB values, convert to int
+      var r = parseInt(('' + r).replace(/\s/g, ''), 10);
+      var g = parseInt(('' + g).replace(/\s/g, ''), 10);
+      var b = parseInt(('' + b).replace(/\s/g, ''), 10);
+
+      if (r == null || g == null || b == null ||
+        isNaN(r) || isNaN(g) || isNaN(b)) {
+        alert('Please enter numeric RGB values!');
+        return;
+      }
+      if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255) {
+        alert('RGB values must be in the range 0 to 255.');
+        return;
+      }
+      r = r / 255;
+      g = g / 255;
+      b = b / 255;
+      var minRGB = Math.min(r, Math.min(g, b));
+      var maxRGB = Math.max(r, Math.max(g, b));
+
+      // Black-gray-white
+      if (minRGB == maxRGB) {
+        computedV = minRGB;
+        return [0, 0, computedV];
+      }
+
+      // Colors other than black-gray-white:
+      var d = (r == minRGB) ? g - b : ((b == minRGB) ? r - g : b - r);
+      var h = (r == minRGB) ? 3 : ((b == minRGB) ? 1 : 5);
+      computedH = 60 * (h - d / (maxRGB - minRGB));
+      computedS = (maxRGB - minRGB) / maxRGB;
+      computedV = maxRGB;
+      return [computedH, computedS, computedV];
+    }
+
+</script>

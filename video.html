@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<style>
+body {
+  background: black;
+}
+  button {
+    background: black;
+    color: white;
+    border: 0;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  img,
+  canvas {
+    /*max-width: 100%;*/
+    background: linear-gradient(black, blue);
+    transform: translate3d();
+    margin: 0 auto;
+    display: block;
+  }
+
+  video {
+    /*visibility: hidden;*/
+    max-width: 320px;
+    margin: 0 auto 20px;
+    display: block;
+  }
+
+  canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+</style>
+
+<video src="grimes.mp4" autoplay loop id="video"></video>
+
+<canvas id="scene"></canvas>
+
+<script type="text/javascript" src="js/video.js"></script>

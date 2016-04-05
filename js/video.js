@@ -1,6 +1,5 @@
 var _SIZE_ = 4;
 
-
 function randoParticles(ctx, cw, ch) {
     var i;
 
@@ -53,13 +52,12 @@ function randoParticles(ctx, cw, ch) {
     }
 }
 
-function drawScene(v,c,bc,w,h, audio, anal) {
-
-
+function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
   var i, p;
 
     if (v.paused || v.ended) return false;
+
     // First, draw it into the backing canvas
     bc.drawImage(v,0,0,w,h);
 
@@ -67,23 +65,13 @@ function drawScene(v,c,bc,w,h, audio, anal) {
     var idata = bc.getImageData(0,0,w,h);
     var data = idata.data;
 
-    c.clearRect(0,0,w * _SIZE_,h * _SIZE_);
+    pc.width = w * _SIZE_;
+    pc.height = h * _SIZE_;
 
-  //   var self = this;
-  //   this.volume = 0;
-  //   this.streamData = new Uint8Array(128);
-   //
-  //   var sampleAudioStream = function() {
-  //      analyser.getByteFrequencyData(self.streamData);
-  //      // calculate an overall volume value
-  //      var total = 0;
-  //      for(var i in self.streamData) {
-  //          total += self.streamData[i];
-  //      }
-  //      self.volume = total;
-  //  };
+    // clear the main scene
+    pctx.clearRect(0,0,w * _SIZE_,h * _SIZE_);
 
-    // console.log(audio);
+    // sample the audio data
     var freqDomain = new Uint8Array(anal.frequencyBinCount);
     var volume;
 
@@ -107,18 +95,6 @@ function drawScene(v,c,bc,w,h, audio, anal) {
     // console.log(Math.floor(volume / 1000));
     // console.log(anal.getFloatFrequencyData(freqDomain));
 
-    //extract volume
-    // for(bin = 0; bin < audioSource.streamData.length; bin ++) {
-    //     // do something with each value. Here's a simple example
-    //     var val = audioSource.streamData[bin];
-    //     var red = val;
-    //     var green = 255 - val;
-    //     var blue = val / 2;
-    //     c.fillStyle = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
-    //     c.fillRect(bin * 2, 0, 2, volumen);
-    //     // use lines and shapes to draw to the canvas is various ways. Use your imagination!
-    // }
-
     // Particlize
     var particles = [];
     var particles2 = [];
@@ -127,7 +103,7 @@ function drawScene(v,c,bc,w,h, audio, anal) {
 
     for (var y = 0, y2 = h; y < y2; y++) {
         for (var x = 0, x2 = w; x < x2; x++) {
-            if (data[(x * 4 + y * 4 * w)] > 64) {
+            if (data[(x * 4 + y * 4 * w)] > 48) {
                 p = {
                     x : x,
                     y : y
@@ -143,7 +119,7 @@ function drawScene(v,c,bc,w,h, audio, anal) {
                 particles2.push(p);
             }
 
-            if (data[(x * 4 + y * 4 * w)] > 192) {
+            if (data[(x * 4 + y * 4 * w)] > 182) {
                 p = {
                     x : x,
                     y : y
@@ -151,7 +127,7 @@ function drawScene(v,c,bc,w,h, audio, anal) {
                 particles3.push(p);
             }
 
-            if (data[(x * 4 + y * 4 * w)] > 204) {
+            if (data[(x * 4 + y * 4 * w)] > 202) {
                 p = {
                     x : x,
                     y : y
@@ -163,41 +139,41 @@ function drawScene(v,c,bc,w,h, audio, anal) {
 
     for(i = 0, j = particles.length; i<j; i++) {
         p = particles[i];
-        c.fillStyle = "#323232";
-        c.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillStyle = "rgba(0,0,0,0.9)";
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
     }
 
     for(i = 0, j = particles2.length; i<j; i++) {
         p = particles2[i];
 
-        c.fillStyle = "#0068ff ";
+        pctx.fillStyle = "#0068ff ";
 
-        c.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z*2, z);
 
-        // c.beginPath();
-        // c.arc(p.x * _SIZE_, p.y * _SIZE_, z, 0, 2 * Math.PI, false);
-        // c.fill();
+        // pctx.beginPath();
+        // pctx.arc(p.x * _SIZE_, p.y * _SIZE_, z, 0, 2 * Math.PI, false);
+        // pctx.fill();
     }
     for(i = 0, j = particles3.length; i<j; i++) {
         p = particles3[i];
-        c.fillStyle = "#AFAFAF";
-        c.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillStyle = "rgba(0,0,0,0.5)";
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
     }
     for(i = 0, j = particles4.length; i<j; i++) {
         p = particles4[i];
-        c.fillStyle = "white";
-        c.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillStyle = "white";
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z*2);
     }
 
     // Draw the pixels onto the visible canvas
     idata.data = data;
 
-    // randoParticles(c, w * _SIZE_, h * _SIZE_);
-
     // Start over!
     requestAnimationFrame(function() {
-      drawScene(v,c,bc,w,h,audio,anal);
-      // drawAudio();
+      c.clearRect(0,0,w * _SIZE_,h * _SIZE_);
+      c.drawImage(pc,0,0);
+      drawScene(v,c,bc,w,h,audio,anal,pc,pctx);
+      // console.log(c);
     }, 0);
 }
 
@@ -207,6 +183,10 @@ document.addEventListener('DOMContentLoaded', function(){
   var context = canvas.getContext('2d');
   var back = document.createElement('canvas');
   var backcontext = back.getContext('2d');
+  var pc = document.createElement('canvas');
+  var pctx = pc.getContext('2d');
+
+  // document.body.appendChild(pc);
 
   var audioCtx = new window.AudioContext();
 
@@ -221,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   var cw,ch;
 
-
   vid.addEventListener('play', function(){
       cw = vid.clientWidth;
       ch = vid.clientHeight;
@@ -230,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function(){
       back.width = cw;
       back.height = ch;
 
-      drawScene(vid,context,backcontext,cw,ch,audioSource, analyser);
+      drawScene(vid,context,backcontext,cw,ch,audioSource, analyser, pc, pctx);
   },false);
 
 

@@ -164,7 +164,9 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
         p = pixelColor[i];
         pp = pixelPos[i];
         pctx.fillStyle = "rgb(" + p.r +"," + p.g + "," + p.b + ")";
-        pctx.fillRect(pp.x * _SIZE_, pp.y * _SIZE_, z*2, z);
+
+        if (p.r > p.g) pctx.fillRect(pp.x * _SIZE_ + z, pp.y * _SIZE_, 1, 1);
+        else pctx.fillRect(pp.x * _SIZE_, pp.y * _SIZE_ - z, 2, 2);
     }
 
     // for(i = 0, j = particles2.length; i<j; i++) {

@@ -1,4 +1,4 @@
-var _SIZE_ = 4;
+var _SIZE_ = 3;
 
 function randoParticles(ctx, cw, ch) {
     var i;
@@ -88,7 +88,9 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
       sampleAudioStream();
 
-      z = volume / 6000;
+      z = (volume / 1000);
+
+      console.log(z)
 
     // console.log(anal);
     // console.log(freqDomain.length);
@@ -139,8 +141,8 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
     for(i = 0, j = particles.length; i<j; i++) {
         p = particles[i];
-        pctx.fillStyle = "rgba(0,0,0,0.9)";
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillStyle = "rgba(30,30,60,1)";
+        pctx.fillRect(p.x * _SIZE_- z, p.y * _SIZE_, 2, 2);
     }
 
     for(i = 0, j = particles2.length; i<j; i++) {
@@ -148,7 +150,7 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
         pctx.fillStyle = "#0068ff ";
 
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z*2, z);
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, 2, 2);
 
         // pctx.beginPath();
         // pctx.arc(p.x * _SIZE_, p.y * _SIZE_, z, 0, 2 * Math.PI, false);
@@ -156,13 +158,13 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
     }
     for(i = 0, j = particles3.length; i<j; i++) {
         p = particles3[i];
-        pctx.fillStyle = "rgba(0,0,0,0.5)";
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z);
+        pctx.fillStyle = "rgba(255,255,255,0.25)";
+        pctx.fillRect(p.x * _SIZE_+ z, p.y * _SIZE_, 2, 2);
     }
     for(i = 0, j = particles4.length; i<j; i++) {
         p = particles4[i];
         pctx.fillStyle = "white";
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z, z*2);
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, 2, 2);
     }
 
     // Draw the pixels onto the visible canvas

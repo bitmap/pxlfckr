@@ -1,4 +1,4 @@
-var _SIZE_ = 3;
+var _SIZE_ = 4;
 
 function randoParticles(ctx, cw, ch) {
     var i;
@@ -90,7 +90,7 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
       z = (volume / 1000);
 
-      console.log(z)
+      console.log(z);
 
     // console.log(anal);
     // console.log(freqDomain.length);
@@ -150,7 +150,7 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
         pctx.fillStyle = "#0068ff ";
 
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, 2, 2);
+        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z/4, z/4);
 
         // pctx.beginPath();
         // pctx.arc(p.x * _SIZE_, p.y * _SIZE_, z, 0, 2 * Math.PI, false);

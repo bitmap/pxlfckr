@@ -1,4 +1,8 @@
-var _SIZE_ = 4;
+var _SIZE_ = 5;
+var pzzz = 1;
+var test1
+var test2
+var test3
 
 function randoParticles(ctx, cw, ch) {
     var i;
@@ -88,9 +92,31 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
       sampleAudioStream();
 
-      z = (volume / 1000);
+      z = (volume / 500);
 
-      console.log(z);
+      // console.log(z);
+
+
+
+      // var test = pzzz + pzzz;
+      test1 = pzzz += 1;
+      pzzz = test1
+      test2 = pzzz -= 1;
+      pzzz = test2
+      test3 = pzzz += 20;
+      pzzz = test3
+
+      if (test1 > 255) {
+        pzzz = 0;
+      }
+      if (test2 > 255 || test2 < 0) {
+        pzzz = 0;
+      }
+      if (test3 > 255) {
+        pzzz = 0;
+      }
+
+      console.log(test1, test2, test3)
 
     // console.log(anal);
     // console.log(freqDomain.length);
@@ -141,16 +167,18 @@ function drawScene(v,c,bc,w,h, audio, anal, pc, pctx) {
 
     for(i = 0, j = particles.length; i<j; i++) {
         p = particles[i];
-        pctx.fillStyle = "rgba(30,30,60,1)";
-        pctx.fillRect(p.x * _SIZE_- z, p.y * _SIZE_, 2, 2);
+        pctx.fillStyle = "blue";
+        pctx.fillRect(p.x * _SIZE_- z, p.y * _SIZE_, z/10, z/10);
     }
 
     for(i = 0, j = particles2.length; i<j; i++) {
         p = particles2[i];
 
-        pctx.fillStyle = "#0068ff ";
 
-        pctx.fillRect(p.x * _SIZE_, p.y * _SIZE_, z/4, z/4);
+
+        pctx.fillStyle = "rgb(100, 0, 200)";
+
+        pctx.fillRect(p.x * _SIZE_ + z, p.y * _SIZE_, z/5, z/5);
 
         // pctx.beginPath();
         // pctx.arc(p.x * _SIZE_, p.y * _SIZE_, z, 0, 2 * Math.PI, false);
@@ -189,16 +217,26 @@ document.addEventListener('DOMContentLoaded', function(){
   var pctx = pc.getContext('2d');
 
   // document.body.appendChild(pc);
+  var audioCtx
+  var analyser
+  var audioSource
 
-  var audioCtx = new window.AudioContext();
+  navigator.getUserMedia({video: false, audio: true}, function(stream) {
+    audioCtx = new window.AudioContext();
 
-  var analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 256;
+    analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
 
-  var audioSource = audioCtx.createMediaElementSource(vid);
+    audioSource = audioCtx.createMediaStreamSource(stream);
 
-  audioSource.connect(analyser);
-  analyser.connect(audioCtx.destination);
+    audioSource.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  },     function(e) {
+      console.log(e);
+      alertError();
+    })
+
+
 
 
   var cw,ch;

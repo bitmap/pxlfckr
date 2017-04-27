@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 
 <style>
-body {
-  background: black;
-}
   button {
     background: black;
     color: white;
@@ -17,19 +14,7 @@ body {
 
   img,
   canvas {
-    /*max-width: 100%;*/
-    background: black;
-    transform: translate3d();
-    margin: 0 auto;
-    display: block;
-  }
-
-  video {
-    visibility: hidden;
-    position: absolute;
-    max-width: 320px;
-    margin: 0 auto 20px;
-    display: block;
+    max-width: 100%;
   }
 
   canvas {
@@ -42,8 +27,10 @@ body {
 }
 </style>
 
-<video src="samples/Grimes.mp4" autoplay loop muted id="video"></video>
+<img id="img" src="samples/asap-ferg-mini.png">
 
-<canvas id="scene"></canvas>
+<canvas></canvas>
 
-<script type="text/javascript" src="js/video.js"></script>
+<button>CONVERT</button>
+
+<script type="text/javascript" src="js/example1.js"></script>

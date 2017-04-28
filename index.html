@@ -19,14 +19,8 @@
     margin: auto;
     display: block;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1920px;
     position: absolute;
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: -o-crisp-edges;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
     top: 0;
     bottom: 0;
     left: 0;
@@ -34,7 +28,6 @@
   }
 
 </style>
-<!-- <video src="samples/Grimes.mp4" autoplay loop muted id="video"></video> -->
-<div id="stream"> <video autoplay loop muted id="video"></video> </div>
+<div id="stream"> <video autoplay loop id="video"></video> </div>
 <div id="sceneContainer"> <canvas id="scene"></canvas> </div>
-<script type="text/javascript" src="js/video_webcam_2.js"></script>
+<script src="pixelfucker.js"></script>
